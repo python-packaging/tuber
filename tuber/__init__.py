@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Optional
+from typing import Optional, Union
 
 # This covers 99% of Python projects.  For simplicity, stop at the first one
 # found.
@@ -17,9 +17,11 @@ class RootException(ValueError):
     pass
 
 
-def get_root(path: Optional[Path] = None) -> Path:
+def get_root(path: Optional[Union[Path, str]] = None) -> Path:
     if path is None:
         path = Path(".")
+    if not isinstance(path, Path):
+        path = Path(path)
 
     # Not guaranteed to return a substring of the passed-in path; this gives the
     # "correct" behavior in the presence of symlinks into a repo.

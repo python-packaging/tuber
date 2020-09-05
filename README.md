@@ -1,6 +1,18 @@
 # Tuber
 
+This project finds an easy way to find the root of a python project's repo.  It
+relies on several common markers, like `.git` or `pyproject.toml` to determine
+this.
 
+```pycon
+>>> from tuber import get_root
+>>> get_root("/")
+Traceback (most recent call last):
+...
+tuber.RootException: No root found before actual root
+>>> get_root(".")
+PosixPath("/path/to/repo")
+```
 
 # License
 

@@ -54,3 +54,13 @@ class GetRootTest(unittest.TestCase):
                 self.assertEqual(dp, get_root())
             finally:
                 os.chdir(prev)
+
+    def test_str(self) -> None:
+        with volatile.dir() as d:
+            dp = Path(d).resolve()
+
+            # doesn't matter if it's a dir or file currently
+            (dp / "pyproject.toml").write_text("")
+            (dp / "x").mkdir()
+            self.assertEqual(dp, get_root(str(dp)))
+            self.assertEqual(dp, get_root(str(dp / "x")))
