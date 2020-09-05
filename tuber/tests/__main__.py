@@ -1,5 +1,5 @@
 import unittest
 
-from . import *
+from . import *  # noqa: F401 F403
 
 unittest.main()

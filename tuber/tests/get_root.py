@@ -8,7 +8,7 @@ from tuber import get_root
 
 
 class GetRootTest(unittest.TestCase):
-    def test_invalid_dir_raises(self):
+    def test_invalid_dir_raises(self) -> None:
         with volatile.dir() as d:
             dp = Path(d)
             with self.assertRaisesRegex(ValueError, "missing is not a directory"):
@@ -29,7 +29,7 @@ class GetRootTest(unittest.TestCase):
             ):
                 get_root(Path("/"))
 
-    def test_various_indicators(self):
+    def test_various_indicators(self) -> None:
         for ind in (".git", "pyproject.toml"):
             with volatile.dir() as d:
                 dp = Path(d)
@@ -39,7 +39,7 @@ class GetRootTest(unittest.TestCase):
                 (dp / "x").mkdir()
                 self.assertEqual(dp, get_root(dp / "x"))
 
-    def test_optional_value(self):
+    def test_optional_value(self) -> None:
         with volatile.dir() as d:
             dp = Path(d)
             # doesn't matter if it's a dir or file currently
