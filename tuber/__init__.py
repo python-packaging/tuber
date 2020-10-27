@@ -67,9 +67,14 @@ def walk(
     includes: Iterable[str] = DEFAULT_INCLUDES,
     excludes: Iterable[str] = DEFAULT_EXCLUDES,
 ) -> Iterable[str]:
-    """Generator function that calls os.walk on a path, applies includes/excludes, and yields the resulting paths
+    """Generator that calls os.walk on a path and applies includes/excludes
 
-    walk() uses fnmatch so Unix shell-style wildcards e.g. *, ?, [1-9] are supported. For more information on the wildcards see https://docs.python.org/3/library/fnmatch.html. Note, the patterns in includes/excludes are only applied to the filename itself, not the directories in the path.
+    walk() uses fnmatch so Unix shell-style wildcards e.g. *, ?, [1-9] are supported.
+    For more information on the wildcards see
+    https://docs.python.org/3/library/fnmatch.html.
+    Note, the patterns in includes/excludes are only applied to the filename itself,
+    not the directories in the path. Additionally os.walk traverses directories in
+    arbitrary order.
     """
     for dirpath, _, filenames in os.walk(root):
         for filename in filenames:
