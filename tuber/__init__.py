@@ -1,10 +1,10 @@
 from pathlib import Path
-from typing import Optional, Union
+from typing import Iterable, Optional, Union
 
 # This covers 99% of Python projects.  For simplicity, stop at the first one
 # found.
 
-ROOT_INDICATORS = {
+DEFAULT_ROOT_INDICATORS = {
     ".git",
     ".hg",
     "pyproject.toml",
@@ -17,7 +17,10 @@ class RootException(ValueError):
     pass
 
 
-def get_root(path: Optional[Union[Path, str]] = None) -> Path:
+def get_root(
+    path: Optional[Union[Path, str]] = None,
+    root_indicators: Iterable[str] = DEFAULT_ROOT_INDICATORS,
+) -> Path:
     if path is None:
         path = Path(".")
     if not isinstance(path, Path):
@@ -30,7 +33,7 @@ def get_root(path: Optional[Union[Path, str]] = None) -> Path:
         raise RootException(f"{path} is not a directory")
 
     while True:
-        if any((path / x).exists() for x in ROOT_INDICATORS):
+        if any((path / x).exists() for x in root_indicators):
             return path
         parent = path.parent
 
