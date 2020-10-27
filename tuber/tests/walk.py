@@ -5,25 +5,30 @@ from pathlib import Path
 
 from tuber import walk
 
+# Each filepath is separated into a list so that os.path.join() can connect
+# them in a platform agnostic way without a predefined separator.
 INCLUDED_TEST_FILEPATHS = [
-    "test.py",
-    "abc/test2.py",
-    "abc/def/test3.py",
-    "ghi/test4.py",
+    ["test.py"],
+    ["abc", "test2.py"],
+    ["abc", "def", "test3.py"],
+    ["ghi", "test4.py"],
 ]
 
 EXCLUDED_TEST_FILEPATHS = [
-    ".direnv" ".eggs" "abc/.ext.py" "abc/.git",
-    "abc/.hg",
-    "abc/.mypy_cache",
-    "abc/def/.nox*",
-    "abc/def/.tox",
-    "abc/def/.venv",
-    "abc/def/.svn",
-    "ghi/_build",
-    "ghi/buck-out*",
-    "ghi/build*",
-    "ghi/dist*",
+    [".direnv"],
+    [".eggs"],
+    ["abc", ".ext.py"],
+    ["abc", ".git"],
+    ["abc", ".hg"],
+    ["abc", ".mypy_cache"],
+    ["abc", "def", ".nox"],
+    ["abc", "def", ".tox"],
+    ["abc", "def", ".venv"],
+    ["abc", "def", ".svn"],
+    ["ghi", "_build"],
+    ["ghi", "buck-out"],
+    ["ghi", "build"],
+    ["ghi", "dist"],
 ]
 
 
@@ -39,7 +44,7 @@ class WalkTest(unittest.TestCase):
         self.temp_dir = tempfile.TemporaryDirectory()
         for relative_test_filepath in EXCLUDED_TEST_FILEPATHS + INCLUDED_TEST_FILEPATHS:
             absolute_test_filepath = os.path.join(
-                self.temp_dir.name, relative_test_filepath
+                self.temp_dir.name, *relative_test_filepath
             )
             self._make_empty_file(absolute_test_filepath)
 
@@ -53,7 +58,7 @@ class WalkTest(unittest.TestCase):
             sorted(result_paths),
             sorted(
                 [
-                    os.path.join(temp_dir_path, test_file)
+                    os.path.join(temp_dir_path, *test_file)
                     for test_file in INCLUDED_TEST_FILEPATHS
                 ]
             ),
