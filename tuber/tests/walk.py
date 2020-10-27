@@ -50,9 +50,11 @@ class WalkTest(unittest.TestCase):
         temp_dir_path = Path(self.temp_dir.name)
         result_paths = list(walk(temp_dir_path))
         self.assertEqual(
-            result_paths,
-            [
-                os.path.join(temp_dir_path, test_file)
-                for test_file in INCLUDED_TEST_FILEPATHS
-            ],
+            sorted(result_paths),
+            sorted(
+                [
+                    os.path.join(temp_dir_path, test_file)
+                    for test_file in INCLUDED_TEST_FILEPATHS
+                ]
+            ),
         )
