@@ -30,7 +30,7 @@ class GetRootTest(unittest.TestCase):
             ):
                 get_root(Path("/"))
 
-    def test_various_indicators(self) -> None:
+    def test_default_root_indicators(self) -> None:
         for ind in (".git", "pyproject.toml"):
             with volatile.dir() as d:
                 dp = Path(d).resolve()
@@ -40,6 +40,21 @@ class GetRootTest(unittest.TestCase):
                 self.assertEqual(dp, get_root(dp))
                 (dp / "x").mkdir()
                 self.assertEqual(dp, get_root(dp / "x"))
+
+    def test_custom_root_indicators(self) -> None:
+        for iterable_type in [list, set, tuple]:
+            with volatile.dir() as d:
+                dp = Path(d).resolve()
+
+                # doesn't matter if it's a dir or file currently
+                (dp / ".git").write_text("")
+                self.assertEqual(
+                    dp, get_root(dp, root_indicators=iterable_type([".git"]))
+                )
+                (dp / "x").mkdir()
+                self.assertEqual(
+                    dp, get_root(dp / "x", root_indicators=iterable_type([".git"]))
+                )
 
     def test_optional_value(self) -> None:
         with volatile.dir() as d:
