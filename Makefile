@@ -1,4 +1,5 @@
-PYTHON?=python
+SHELL := /bin/bash
+PYTHON?=/usr/bin/env python3
 SOURCES=tuber setup.py
 
 .PHONY: venv
@@ -12,6 +13,7 @@ venv:
 
 .PHONY: setup
 setup:
+	python -m pip install --upgrade wheel
 	python -m pip install -Ur requirements-dev.txt
 
 .PHONY: test
