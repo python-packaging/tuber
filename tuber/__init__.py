@@ -17,20 +17,20 @@ DEFAULT_ROOT_INDICATORS = {
 DEFAULT_INCLUDES = ["*.py"]
 
 DEFAULT_EXCLUDES = [
-    "*.direnv*",
-    "*.eggs*",
-    "*.ext.py*",
-    "*.git*",
-    "*.hg*",
-    "*.mypy_cache*",
-    "*.nox*",
-    "*.tox*",
-    "*.venv*",
-    "*.svn*",
-    "*_build*",
-    "*buck-out*",
-    "*build*",
-    "*dist*",
+    ".direnv",
+    ".egg*",
+    ".ext.py",
+    ".git",
+    ".hg",
+    ".mypy_cache",
+    ".nox",
+    ".tox",
+    ".venv",
+    ".svn",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
 ]
 
 
@@ -79,13 +79,18 @@ def walk(
     not the directories in the path. Additionally os.walk traverses directories in
     arbitrary order.
     """
-    for dirpath, _, filenames in os.walk(root):
+    for dirpath, dirnames, filenames in os.walk(root):
         for filename in filenames:
             if not any([fnmatch(filename, pattern) for pattern in includes]):
                 continue
             if any([fnmatch(filename, pattern) for pattern in excludes]):
                 continue
             yield os.path.join(dirpath, filename)
+        dirnames[:] = [
+            d
+            for d in dirnames
+            if not any([fnmatch(d, pattern) for pattern in excludes])
+        ]
 
 
 if __name__ == "__main__":  # pragma: no cover

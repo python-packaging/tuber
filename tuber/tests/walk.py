@@ -21,6 +21,7 @@ EXCLUDED_TEST_FILEPATHS = [
     ["abc", ".git"],
     ["abc", ".hg"],
     ["abc", ".mypy_cache"],
+    ["abc", ".svn", "foo.py"],
     ["abc", "def", ".nox"],
     ["abc", "def", ".tox"],
     ["abc", "def", ".venv"],
